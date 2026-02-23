@@ -49,9 +49,9 @@ async def detect_plan_fab_raw(request: Request) -> JSONResponse:
             raise HTTPException(status_code=500, detail=f"Processing error: {type(e).__name__}: {e}")
 
     payload: Dict[str, Any] = {
-        "best_page": best_page,
-        "top_k": TOP_K,
-        "min_score": MIN_SCORE,
+        #"best_page": best_page,
+        #"top_k": TOP_K,
+        #"min_score": MIN_SCORE,
         "candidates": [
             {
                 "page": c.page,
