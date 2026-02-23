@@ -157,8 +157,8 @@ if __name__ == "__main__":
     if not candidates:
         print("[-] Aucune page n'a atteint le score minimum de 1.0.")
     else:
-        print(f"[+] Meilleure page détectée : {best}")
-        print("-" * 30)
+       # print(f"[+] Meilleure page détectée : {best}")
+       # print("-" * 30)
         for c in candidates:
             print(f"Page {c.page:02d} | Score: {c.score:5.2f} | OCR: {c.ocr_excerpt[:60]}...")
             print("Sans IA")
