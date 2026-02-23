@@ -1,4 +1,4 @@
-# Detect Plan Fab – Webservice (FastAPI)
+# Detect Plan Fabrication au sein d'un fichier PDF – Webservice (FastAPI)
 
 ## Endpoint
 - `POST /detect_plan_fab`  
@@ -20,13 +20,13 @@ curl -s -X POST "http://localhost:8000/detect_plan_fab" \
   -F "pdf=@plan5.pdf" | jq .
 ```
 
-## Run with Docker
+## Fonctionne avec Docker
 ```bash
 docker build -t detect-plan-fab:latest .
 docker run --rm -p 8000:8000 detect-plan-fab:latest
 ```
 
-## Deploy behind https://backpresto.fr/detect_plan_fab
+## Deploy behind https://0.0.0.0/detect_plan_fab
 You usually keep the container on an internal port (e.g. 8000) and configure your reverse proxy (Nginx/Traefik/Apache)
 to forward **only** `/detect_plan_fab` to `http://127.0.0.1:8000/detect_plan_fab`.
 
