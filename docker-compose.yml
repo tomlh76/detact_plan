@@ -1,0 +1,12 @@
+services:
+  detect-plan-fab:
+    build: .
+    image: detect-plan-fab:latest
+    container_name: detect-plan-fab
+    environment:
+      - PORT=8000
+      - TOP_K=5
+      - MIN_SCORE=1.0
+      - MAX_PDF_MB=35
+    ports:
+      - "8000:8000"
