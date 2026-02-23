@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 import os
+
 import tempfile
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi import FastAPI, File, UploadFile, HTTPException, Request
 from fastapi.responses import JSONResponse
 
 # Import your existing logic
@@ -22,6 +23,48 @@ app = FastAPI(title=APP_NAME)
 @app.get("/health")
 def health() -> Dict[str, str]:
     return {"status": "ok"}
+
+@app.post("/detect_plan_fab_raw")
+async def detect_plan_fab_raw(request: Request) -> JSONResponse:
+    """
+    Receive a raw PDF buffer as request body (Content-Type: application/pdf) and return JSON.
+    """
+    ctype = (request.headers.get("content-type") or "").lower()
+    if "application/pdf" not in ctype:
+        raise HTTPException(status_code=415, detail="Content-Type must be application/pdf")
+
+    data = await request.body()
+    if not data:
+        raise HTTPException(status_code=400, detail="Empty body.")
+    if len(data) > MAX_PDF_MB * 1024 * 1024:
+        raise HTTPException(status_code=413, detail=f"File too large (>{MAX_PDF_MB}MB).")
+
+    with tempfile.TemporaryDirectory() as td:
+        tmp_pdf = Path(td) / "input.pdf"
+        tmp_pdf.write_bytes(data)
+
+        try:
+            best_page, candidates = find_fab_plan_pages(tmp_pdf, top_k=TOP_K, min_score=MIN_SCORE)
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Processing error: {type(e).__name__}: {e}")
+
+    payload: Dict[str, Any] = {
+        "best_page": best_page,
+        "top_k": TOP_K,
+        "min_score": MIN_SCORE,
+        "candidates": [
+            {
+                "page": c.page,
+                "score": round(float(c.score), 4),
+                "median_len": round(float(c.median_len), 4),
+                "long_line_ratio": round(float(c.long_line_ratio), 6),
+                "non_axial_ratio": round(float(c.non_axial_ratio), 6),
+                "ocr_excerpt": c.ocr_excerpt,
+            }
+            for c in candidates
+        ],
+    }
+    return JSONResponse(content=payload)
 
 
 @app.post("/detect_plan_fab")
