@@ -151,11 +151,11 @@ def find_fab_plan_pages(pdf_path: str | Path, top_k: int = 3, min_score: float =
 
 # --- EXECUTION ---
 if __name__ == "__main__":
-    # Paramètre min_score réglé sur 1.0 comme demandé
+    # Paramètre min_score réglé sur 3.0 comme demandé
     best, candidates = find_fab_plan_pages("plan5.pdf", top_k=5, min_score=3.0)
 
     if not candidates:
-        print("[-] Aucune page n'a atteint le score minimum de 2.0.")
+        print("[-] Aucune page n'a atteint le score minimum de 3.0.")
     else:
        # print(f"[+] Meilleure page détectée : {best}")
        # print("-" * 30)
