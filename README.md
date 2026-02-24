@@ -1,8 +1,10 @@
-# Detect Plan Fabrication au sein d'un fichier PDF – Webservice (FastAPI)
+# Detect un ou des plans de fabrication au sein d'un fichier PDF – Webservice (FastAPI)
 
 ## Endpoint
 - `POST /detect_plan_fab`  
-  Receives a PDF as **multipart/form-data** (field name: `pdf`) and returns JSON.
+  Réception d'un PDF au format **multipart/form-data** (field name: `pdf`) et retour JSON.
+- `POST /detect_plan_fab_raw`  
+  Réception d'un PDF au format **typemimepdf** (buffer) et retour JSON.
 
 - `GET /health`
 
