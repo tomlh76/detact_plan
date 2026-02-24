@@ -15,7 +15,7 @@ from detect_plan import find_fab_plan_pages, PlanCandidate
 APP_NAME = "detect_plan_fab_service"
 MAX_PDF_MB = float(os.getenv("MAX_PDF_MB", "35"))
 TOP_K = int(os.getenv("TOP_K", "5"))
-MIN_SCORE = float(os.getenv("MIN_SCORE", "2.0"))
+MIN_SCORE = float(os.getenv("MIN_SCORE", "2.5"))
 
 app = FastAPI(title=APP_NAME)
 
